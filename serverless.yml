@@ -1,18 +1,84 @@
-# "service" is the name of this project. This will also be added to your AWS resource names.
-service: crudapi
+service: aws-crud-api
+
 frameworkVersion: "4"
 
 provider:
   name: aws
-  runtime: nodejs20.x
-  # Uncomment to easily set up a custom domain. Read the docs for more details:
-  # https://www.serverless.com/framework/docs/providers/aws/guide/domains
-  # domain: api.example.com
+  runtime: nodejs18.x
+  region: us-east-1
+
+  # Stage configuration (dev / prod)
+  stage: ${opt:stage, 'dev'}
+
+  # Environment variables
+  environment:
+    TABLE_NAME: ItemsTable-${self:provider.stage}
+
+  # IAM permissions for Lambda
+  iam: 
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:Scan
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/ItemsTable-${self:provider.stage}
 
 functions:
-  hello:
-    handler: handler.hello
+  createItem:
+    handler: src/handler/createItem.handler
     events:
-      - httpApi:
-          path: /
+      - http:
+          path: items
+          method: post
+          cors: true
+
+  getItem:
+    handler: src/handler/getItem.handler
+    events:
+      - http:
+          path: items/{id}
           method: get
+          cors: true
+
+  getItems:
+    handler: src/handler/getItems.handler
+    events:
+      - http:
+          path: items
+          method: get
+          cors: true
+
+  updateItem:
+    handler: src/handler/updateItem.handler
+    events:
+      - http:
+          path: items/{id}
+          method: put
+          cors: true
+
+  deleteItem:
+    handler: src/handler/deleteItem.handler
+    events:
+      - http:
+          path: items/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    ItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ItemsTable-${self:provider.stage}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
