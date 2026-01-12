@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { ddbDocClient, tableName } from "../utils/dynamodb";
-import { GetCommand } from "@aws-sdk/lib-dynamodb";
+import { DeleteCommand } from "@aws-sdk/lib-dynamodb";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
@@ -10,21 +10,22 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     }
 
     const result = await ddbDocClient.send(
-      new GetCommand({
+      new DeleteCommand({
         TableName: tableName,
         Key: { id },
+        ReturnValues: "ALL_OLD",
       })
     );
 
-    if (!result.Item) {
+    if (!result.Attributes) {
       return { statusCode: 404, body: "Item not found" };
     }
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Item retrieved successfully",
-        item: result.Item,
+        message: "Item deleted successfully",
+        item: result.Attributes,
       }),
     };
   } catch (error) {
