@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
-
+//Test
 const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
@@ -16,7 +16,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     if (!id || !name || price === undefined) {
       return { statusCode: 400, body: "id, name, and price are required" };
     }
-
+    
     await ddbDocClient.send(
       new PutCommand({
         TableName: TABLE_NAME,
