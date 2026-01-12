@@ -1,16 +1,4 @@
-<!--
-title: 'AWS Simple HTTP Endpoint example in NodeJS'
-description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.'
-layout: Doc
-framework: v4
-platform: AWS
-language: nodeJS
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, Inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
-
-# Serverless Framework Node HTTP API on AWS
+# AWS API Gateway CRUD REST API Using Serverlss Framework
 
 This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
 
@@ -67,3 +55,53 @@ This will start a local emulator of AWS Lambda and tunnel your requests to and f
 Now you can invoke the function as before, but this time the function will be executed locally. Now you can develop your function locally, invoke it, and see the results immediately without having to re-deploy.
 
 When you are done developing, don't forget to run `serverless deploy` to deploy the function to the cloud.
+
+## API Endpoints
+
+### Create Item
+
+Method: POST
+
+URL: https://5dpzo73kgf.execute-api.us-east-1.amazonaws.com/dev/items/
+
+Example input: {
+  "id": "4",
+  "name": "Desktop",
+  "price": 100
+}
+
+### Get Item
+
+Method: GET
+
+URL: https://5dpzo73kgf.execute-api.us-east-1.amazonaws.com/dev/items/
+
+### Get Single Item
+
+Method: GET
+
+URL: https://5dpzo73kgf.execute-api.us-east-1.amazonaws.com/dev/items/{id}
+
+Example input: {id} : 1
+
+### Update Item
+
+Method: PUT
+
+URL: https://5dpzo73kgf.execute-api.us-east-1.amazonaws.com/dev/items/{id}
+
+Example input: {id} : 1
+
+{
+  "name": "Desktop"
+}
+
+### Delete Item
+
+Method: DELETE
+
+URL: https://5dpzo73kgf.execute-api.us-east-1.amazonaws.com/dev/items/{id}
+
+Example input: {id} : 1
+
+
