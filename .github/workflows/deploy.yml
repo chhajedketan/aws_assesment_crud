@@ -3,7 +3,7 @@ name: Deploy Serverless CRUD API
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
