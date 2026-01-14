@@ -1,3 +1,7 @@
+## LOOM Video 
+
+### Link: https://www.loom.com/share/25cbb8aede0f40508fb111c69a6c3ef7
+
 # AWS API Gateway CRUD REST API Using Serverlss Framework
 
 This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
